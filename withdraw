@@ -1,0 +1,137 @@
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class Withdraw extends JFrame {
+    private Container c;
+    private JLabel currentLabel, withdrawLabel, netLabel;
+    private JTextField withdrawTf, netTf;
+    private JButton confirmBtn, cancelBtn, backBtn;
+    private Font f, fp, fd, fD;
+    private Cursor cursor;
+    private ImageIcon icon;
+    private double currentBalance = 1000.0; // Initial balance
+
+    public Withdraw() {
+        initComponents();
+    }
+
+    public void initComponents() {
+        setSize(550, 550);
+        setResizable(false); // Fixed size for better centering
+        setLocationRelativeTo(null); // Center the window on screen
+        c = getContentPane();
+        c.setLayout(null); // Use absolute positioning
+
+        Color redish = new Color(220, 53, 69);
+        c.setBackground(redish);
+        f = new Font("Moderustic", Font.BOLD, 17);
+        fp = new Font("Arial", Font.ITALIC, 14);
+        fd = new Font("Arial", Font.ITALIC, 15);
+        fD = new Font("Arial", Font.ITALIC, 12);
+        cursor = new Cursor(Cursor.HAND_CURSOR);
+        Color charcoalGray = new Color(54, 69, 79);
+        icon = new ImageIcon(getClass().getResource("profilee.png"));
+        this.setIconImage(icon.getImage());
+
+        setTitle("WITHDRAW");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        // Withdraw Label
+        withdrawLabel = new JLabel("Withdraw Amount:");
+        withdrawLabel.setBounds(50, 50, 150, 25);
+        withdrawLabel.setForeground(Color.WHITE);
+        withdrawLabel.setFont(f);
+        c.add(withdrawLabel);
+
+        // Withdraw TextField
+        withdrawTf = new JTextField();
+        withdrawTf.setBounds(220, 50, 150, 25);
+        c.add(withdrawTf);
+
+        // Net Balance Label
+        netLabel = new JLabel("Net Balance:");
+        netLabel.setBounds(50, 100, 150, 25);
+        netLabel.setForeground(Color.WHITE);
+        netLabel.setFont(f);
+        c.add(netLabel);
+
+        // Net Balance TextField (initially disabled to prevent manual edits)
+        netTf = new JTextField(String.valueOf(currentBalance));
+        netTf.setBounds(220, 100, 150, 25);
+        netTf.setEditable(false);
+        c.add(netTf);
+
+        // Current Balance Label
+        currentLabel = new JLabel("Current Balance: $" + currentBalance);
+        currentLabel.setBounds(50, 150, 250, 25);
+        currentLabel.setForeground(Color.WHITE);
+        currentLabel.setFont(f);
+        c.add(currentLabel);
+
+        // Confirm Button
+        confirmBtn = new JButton("Confirm");
+        confirmBtn.setBounds(50, 200, 100, 30);
+        confirmBtn.setCursor(cursor);
+        c.add(confirmBtn);
+
+        // Cancel Button
+        cancelBtn = new JButton("Cancel");
+        cancelBtn.setBounds(200, 200, 100, 30);
+        cancelBtn.setCursor(cursor);
+        c.add(cancelBtn);
+
+        // Back Button
+        backBtn = new JButton("Back");
+        backBtn.setBounds(350, 200, 100, 30);
+        backBtn.setCursor(cursor);
+        c.add(backBtn);
+
+        // Confirm Button ActionListener
+        confirmBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String input = withdrawTf.getText();
+                try {
+                    double withdrawAmount = Double.parseDouble(input);
+
+                    if (withdrawAmount > 0 && withdrawAmount <= currentBalance) {
+                        currentBalance -= withdrawAmount;
+                        netTf.setText(String.valueOf(currentBalance));
+                        currentLabel.setText("Current Balance: $" + currentBalance);
+                        JOptionPane.showMessageDialog(c, "Withdrawal Successful!");
+                    } else if (withdrawAmount > currentBalance) {
+                        JOptionPane.showMessageDialog(c, "Insufficient Balance!", "Error", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(c, "Enter a valid amount", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(c, "Please enter a valid number", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        // Cancel Button ActionListener (clears the withdraw amount)
+        cancelBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                withdrawTf.setText("");
+            }
+        });
+
+        // Back Button ActionListener (go back to previous window, assuming Login)
+        backBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                //Login loginFrame = new Login();  // Assuming Login is another frame in your system
+              
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        Withdraw frame = new Withdraw();
+        frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame Exit_ON_Close);
+		frame .setTitle("QWW");
+    }
+}
