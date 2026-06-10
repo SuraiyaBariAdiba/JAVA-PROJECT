@@ -1,0 +1,107 @@
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
+
+public class Wellcome extends JFrame {
+    private Container c;
+    private JLabel titleLabel, thankYouLabel;
+    private JButton tf, be, ms, fc, wd, cd, back, Logout;
+    private Font f, fp;
+    private Cursor cursor;
+    private String username;
+
+    Wellcome(String username) {
+        this.username = username;
+        initComponents();
+    }
+
+    public void initComponents() {
+        setSize(550, 500);
+        setResizable(false);
+        setLocationRelativeTo(null);
+        c = getContentPane();
+        c.setLayout(null);
+        c.setBackground(new Color(178, 221, 242));
+        f = new Font("Moderustic", Font.BOLD, 17);
+        fp = new Font("Moderustic", Font.BOLD, 14);
+        cursor = new Cursor(Cursor.HAND_CURSOR);
+        Color charcoalGray = new Color(54, 69, 79);
+
+        // User Image
+        addImage("provider.png", 10, 0, 60, 60);
+        
+        titleLabel = createLabel("Choose Any Option To Continue", 120, 30, 320, 60, charcoalGray, 20);
+        c.add(titleLabel);
+        
+        addImage("user.png", 450, 30, 30, 30);
+
+        // Thank You Label
+        thankYouLabel = createLabel("Thank you " + username + "!", 150, 350, 300, 30, charcoalGray, 23);
+        c.add(thankYouLabel);
+
+        // Buttons
+        tf = createButton("TRANSFER FUNDS", "moneyTrans.png", 10, 120);
+        be = createButton("BALANCE ENQUIRY", null, 10, 200);
+        ms = createButton("MOBILE RECHARGE", null, 10, 270);
+        fc = createButton("FAST CASH", null, 300, 120);
+        wd = createButton("WITHDRAWAL", null, 300, 200);
+        cd = createButton("PIN CHANGE", null, 300, 270);
+        
+        // Back Button
+        back = createButton("Back", "back.png", 10, 400);
+        
+        // Logout Button
+        Logout = createButton("LOG OUT", "logout.png", 370, 400);
+        
+        // Action Listeners
+        tf.addActionListener(e -> switchFrame(new FundTrans()));
+        be.addActionListener(e -> switchFrame(new Bank()));
+        wd.addActionListener(e -> switchFrame(new Withdraw()));
+        cd.addActionListener(e -> switchFrame(new Profile()));
+        back.addActionListener(e -> switchFrame(new Login()));
+        Logout.addActionListener(e -> switchFrame(new Login()));
+    }
+
+    private void addImage(String imagePath, int x, int y, int width, int height) {
+        ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource(imagePath));
+        Image image = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        JLabel label = new JLabel(new ImageIcon(image));
+        label.setBounds(x, y, width, height);
+        c.add(label);
+    }
+
+    private JLabel createLabel(String text, int x, int y, int width, int height, Color color, int fontSize) {
+        JLabel label = new JLabel(text);
+        label.setForeground(color);
+        label.setFont(new Font("Helvetica", Font.BOLD, fontSize));
+        label.setBounds(x, y, width, height);
+        return label;
+    }
+
+    private JButton createButton(String text, String iconPath, int x, int y) {
+        JButton button = iconPath != null ?
+                new JButton(text, new ImageIcon(new ImageIcon(getClass().getResource(iconPath)).getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH))) :
+                new JButton(text);
+
+        button.setBackground(Color.BLUE);
+        button.setForeground(Color.WHITE);
+        button.setBounds(x, y, 200, 50);
+        button.setFont(f);
+        button.setCursor(cursor);
+        c.add(button);
+        return button;
+    }
+
+    private void switchFrame(JFrame frame) {
+        dispose();
+        frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        Wellcome frame = new Wellcome("User");
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setTitle("ATM");
+    }
+}
